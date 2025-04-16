@@ -1,31 +1,34 @@
 "use client";
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 
 export default function AdminLayout({ children }) {
 	const [adminAutenticado, setAdminAutenticado] = useState(false);
 	const router = useRouter();
+	const pathname = usePathname();
 
 	useEffect(() => {
-		// Verifica se existe adminId no localStorage
 		const adminId = localStorage.getItem("adminId");
-		// Se não existir e a rota não for a /admin (login), redireciona
-		// (Opcional) ou você pode fazer essa verificação em cada página,
-		// dependendo da sua lógica
-		if (!adminId) {
-			// IMPORTANTE: se o usuário estiver em /admin (que é o login),
-			// não redirecionamos, senão ficaria em loop.
-			// Então podemos checar a rota antes de redirecionar ou
-			// delegar essa checagem para cada página.
-		} else {
+		if (adminId) {
 			setAdminAutenticado(true);
+		} else {
+			setAdminAutenticado(false);
 		}
-	}, []);
+	}, [pathname]);
+	// a cada mudança de rota, rechecamos o localStorage
 
 	function handleLogout() {
 		localStorage.removeItem("adminId");
 		localStorage.removeItem("adminEmail");
+
+		// FORÇA O ESTADO PARA FALSE
+		setAdminAutenticado(false);
+
 		router.push("/admin"); // volta para a página de login
+	}
+
+	if (pathname === "/admin") {
+		return <>{children}</>;
 	}
 
 	return (
