@@ -152,9 +152,9 @@ export default function AdminEntregasPage() {
 				{entregas.map((entrega) => (
 					<li key={entrega.id}>
 						<strong>{entrega.endereco}</strong> |{" "}
-						{entrega.forma_pagamento} | {entrega.status_entrega} |
-						Motoboy: {entrega.motoboys?.nome} -{" "}
-						{entrega.motoboys?.placa}
+						{entrega.forma_pagamento} | Motoboy:{" "}
+						{entrega.motoboys?.nome} - {entrega.motoboys?.placa} |{" "}
+						{entrega.status_entrega}
 					</li>
 				))}
 			</ul>
